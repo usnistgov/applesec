@@ -16847,7 +16847,3 @@ parse_arguments () {
 main $@ # Runs the main function and passes the command-line arguments.
         # Runs after all the other functions are defined, so no forward
         #      declarations are needed.
-
-
-# left justify the path, fill 40, and add the rwx bits
-#	printf "%-40s %s\n" $1 `ls -ld $1 | awk '{print $1}'`
