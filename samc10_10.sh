@@ -766,7 +766,7 @@ CCE_79939_5_add_login_banner () {
         "oem")
             if [ -e "$banner_file" ]; then
                 echo "disabling $friendly_name"
-                rm "$policy_file"
+                rm "$banner_file"
             else
                 echo "$friendly_name already disabled";
             fi
@@ -8509,9 +8509,6 @@ CCE_79838_9_disable_auto_picture_CD_display () {
     fi
 
 
-#*************** Profiles Changed from OS X guidance spreadsheet  ***************
-# oem: Open iPhoto -> Ignore
-
 # iPhoto may become the default action after it is installed, but it is not installed
 # by default.
 
@@ -8695,9 +8692,6 @@ CCE_79843_9_enable_firewall_logging () {
     fi
 
 
-#*************** Profiles Changed from OS X guidance spreadsheet  ***************
-#oem: firewall logging disabled -> firewall logging enabled
-
 # Testing process:
 # Used SSH to connect from the physical machine to the VM, and the log only recorded
 # entries when the logging mode was turned on.
@@ -8734,7 +8728,7 @@ CCE_79844_7_ssh_disable_root_login () {
         # allow comments for current_string so it can be replaced in the file
         current_string=`echo "$file_contents" | egrep -i "^#?$setting_name"`
 
-        # do not allow comments for current_value because they do not effect the setting;
+        # do not allow comments for current_value because they do not affect the setting;
         # current_value will equal current_string if the setting is commented
         current_value=`echo "$current_string" | sed -E "s/^$setting_name //"`
 
@@ -9516,10 +9510,6 @@ CCE_79857_9_unload_uninstall_isight_camera () {
         esac
     fi
 
-#*************** Profiles Changed from OS X guidance spreadsheet  ***************
-#soho: not specified -> camera kext and plugin files allowed
-#ent: not specified -> camera kext and plugin files allowed
-
 #Testing process
 #In order to verify the effectiveness, the camera was tested using the Photo Booth
 #application after applying the desired setting.
@@ -9631,10 +9621,6 @@ CCE_79858_7_unload_uninstall_infrared_receiver () {
         esac
     fi
 
-
-#*************** Profiles Changed from OS X guidance spreadsheet  ***************
-#soho: not specified -> infrared receiver kext file allowed
-#ent: not specified -> infrared receiver kext file allowed
 
 #OS X 10.10 real hardware test
 #After removing the kext files, the GUI setting for infrared remote was no longer present.
@@ -9947,7 +9933,7 @@ CCE_79864_5_ssh_turn_off_user_environment() {
         # allow comments for current_string so it can be replaced in the file
         current_string=`echo "$file_contents" | egrep -i "^#?$setting_name"`
 
-        # do not allow comments for current_value because they do not effect the setting;
+        # do not allow comments for current_value because they do not affect the setting;
         # current_value will equal current_string if the setting is commented
         current_value=`echo "$current_string" | sed -E "s/^$setting_name //"`
 
@@ -10058,7 +10044,7 @@ CCE_79865_2_ssh_use_protocol_version_2() {
         # allow comments for current_string so it can be replaced in the file
         current_string=`echo "$file_contents" | egrep -i "^#?$setting_name"`
 
-        # do not allow comments for current_value because they do not effect the setting;
+        # do not allow comments for current_value because they do not affect the setting;
         # current_value will equal current_string if the setting is commented
         current_value=`echo "$current_string" | sed -E "s/^$setting_name //"`
 
@@ -10647,7 +10633,7 @@ CCE_79893_4_ssh_keep_alive_messages () {
         # allow comments for current_string so it can be replaced in the file
         current_string=`echo "$file_contents" | egrep -i "^#?$setting_name"`
 
-        # do not allow comments for current_value because they do not effect the setting;
+        # do not allow comments for current_value because they do not affect the setting;
         # current_value will equal current_string if the setting is commented
         current_value=`echo "$current_string" | sed -E "s/^$setting_name //"`
 
@@ -11857,7 +11843,7 @@ CCE_79936_1_restrict_remote_apple_events_to_specific_users () {
 #disabled. After restart, previously authorized users could no longer send events.
 
 #Applies immediately when enabling the setting, but disabling requires restart for
-#users already authenticated with remote events. Other users are effected immediately.
+#users already authenticated with remote events. Other users are affected immediately.
 }
 
 
@@ -14308,37 +14294,6 @@ final_tasks () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ######################################################################
 CCE_79741_5_bluetooth_open_setup_if_no_keyboard () {
     local doc="CCE_79741_5_bluetooth_open_setup_if_no_keyboard                 (manual-test-PASSED)"
@@ -14499,9 +14454,6 @@ CCE_79745_6_bluetooth_turn_off_bluetooth () {
         esac
     fi
 
-#*************** Profiles Changed from OS X guidance spreadsheet  ***************
-#ent: not specified -> Bluetooth controller power allowed
-#soho: not specified -> Bluetooth controller power allowed
 
 #With Bluetooth enabled on physical machine, controller shows up in VM as Parallells
 #BT Controller. VM does not appear capable of disabling the adapter; option is greyed out.
@@ -14686,7 +14638,6 @@ CCE_79748_0_bluetooth_disable_wake_computer () {
 #present. We assume this also applies to physical machines that do not support
 #Bluetooth waking.
 
-#The spreadsheet incorrectly refers to this setting name as BluetoothSystemWakeEnable
 
 #NEEDS_REAL_HARDWARE
 
@@ -14852,23 +14803,6 @@ CCE_79756_3_bluetooth_unload_uninstall_kext () {
                 mkdir $destination
             fi
 
-            #Unload file1 and file2 from the kernel if they are loaded
-:<<'COMMENT_BLOCK'
-            if [ $file1_loaded == "1" ]; then
-                if [ "$v_flag" != "" ]; then
-                    echo "Unloading $file1 from the kernel"
-                fi
-                kextunload $kext_path$file1
-            fi
-            if [ $file2_loaded == "1" ]; then
-                if [ "$v_flag" != "" ]; then
-                    echo "Unloading $file2 from the kernel"
-                fi
-                kextunload $kext_path$file2
-            fi
-COMMENT_BLOCK
-
-
             if [ "$v_flag" == "" ]; then
                 echo "Unloading and moving Bluetooth kext files to $destination"
                 #echo "Removing Bluetooth kext files"
@@ -14940,28 +14874,11 @@ COMMENT_BLOCK
                 echo "$file2 already present in $kext_path"
             fi
 
-#Do not load kexts while unloading does not work
-:<<'COMMENT_BLOCK'
-
-            #Load file1 and file2 into the kernel if they are not currently loaded
-            if [ $file1_loaded != "1" ]; then
-                if [ "$v_flag" != "" ]; then
-                    echo "Loading $file1 into the kernel"
-                fi
-                kextload $kext_path$file1
-            fi
-
-            #Note: file2 does not appear to be loaded by default
-COMMENT_BLOCK
-
             ;;
         esac
     fi
 
 
-#*************** Profiles Changed from OS X guidance spreadsheet  ***************
-#soho: not specified -> Bluetooth kext allowed
-#ent: not specified -> Bluetooth kext allowed
 
 #Note: some kext files are actually packages that contain many kext files.
 #If the owner or group of a kext file is changed, the system pops up with a
@@ -15026,9 +14943,6 @@ CCE_79763_9_remove_all_preferred_wireless_networks () {
         fi
     fi
 
-#*************** Profiles Changed from OS X guidance spreadsheet  ***************
-#ent: no preferred networks -> preferred networks allowed
-#soho: no preferred networks -> preferred networks allowed
 
 # NEEDS_REAL_HARDWARE
 #OS X 10.10 Real Hardware Test
@@ -15871,7 +15785,6 @@ CCE_79790_2_enable_display_sleep () {
 
 #OS X 10.10 real hardware test
 #The setting took effect immediately without logging out or restarting.
-
 }
 
 ######################################################################
@@ -16441,7 +16354,7 @@ local doc="CCE_79799_3_disable_bonjour_advertising                (manual-test-P
     fi
 
     if [ "$print_flag" != "" ]; then
-        if [ "$value_exists" != "0" ]; then
+        if [ "$value_exists" != "0" || "$value2_exists" != "0" ]; then
             echo "$friendly_name is disabled";
         else
             echo "$friendly_name is enabled";
@@ -16620,8 +16533,6 @@ CCE_79800_9_disable_airdrop () {
         fi
     fi
 
-#*************** Profiles Changed from OS X guidance spreadsheet  ***************
-#soho: AirDrop disabled -> AirDrop allowed
 
 # Note: AirDrop requires an enabled Wi-Fi adapter to function.
 
@@ -16687,26 +16598,12 @@ CCE_79801_7_wifi_unload_uninstall_kext () {
                 mkdir $destination
             fi
 
-            #Unloading Wi-Fi kexts does not work
-:<<'COMMENT_BLOCK'
-            #Unload file1 from the kernel if it is loaded
-            if [ $file1_loaded == "1" ]; then
-                if [ "$v_flag" != "" ]; then
-                    echo "Unloading $file1 from the kernel"
-                fi
-                kextunload $kext_path$file1
-            elif [ "$v_flag" != "" ]; then
-                echo "$file1 is already unloaded"
-            fi
-COMMENT_BLOCK
-
             if [ $file1_exists == "1" ]; then
                 if [ "$v_flag" != "" ]; then
                     echo "Moving $file1 from $kext_path to $destination"
                     #echo "Removing $kext_path$file1"
                 else
                     echo "Moving $friendly_name to $destination"
-                    #echo "Unloading and moving $friendly_name to $destination"
                     #echo "Removing $friendly_name"
                 fi
 
@@ -16736,22 +16633,6 @@ COMMENT_BLOCK
             else
                 echo "$file1 already present in $kext_path"
             fi
-
-#Do not load kexts because unloading does not work
-:<<'COMMENT_BLOCK'
-
-            #Load file1 into the kernel if it is not currently loaded
-            if [ $file1_loaded != "1" ]; then
-                if [ "$v_flag" != "" ]; then
-                    echo "Loading $file1 into the kernel"
-                fi
-                kextload $kext_path$file1
-            elif [ "$v_flag" != "" ]; then
-                echo "$file1 is already loaded"
-            fi
-
-COMMENT_BLOCK
-
             ;;
         esac
     fi
