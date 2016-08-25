@@ -507,7 +507,6 @@ CCE_79839_7_disable_auto_video_DVD_play"
 execute_batch_20() {
     CCE_79781_1_use_network_time_protocol
     CCE_79782_9_park_disk_heads_on_sudden_motion
-    CCE_79833_0_encrypt_system_swap_file
     CCE_79843_9_enable_firewall_logging
     CCE_79845_4_allow_signed_sw_receive_connections
     CCE_79846_2_turn_on_firewall
@@ -7874,83 +7873,6 @@ CCE_79831_4_ssh_max_auth_tries_4_or_less () {
 
 # OS X 10.10 testing
 # Setting applied immediately.
-}
-
-
-######################################################################
-CCE_79833_0_encrypt_system_swap_file () {
-    local doc="CCE_79833_0_encrypt_system_swap_file      (manual-test-PASSED)"
-    local file="/Library/Preferences/com.apple.virtualMemory.plist"
-
-    local friendly_name="encrypted swap file"
-    local setting_name="DisableEncryptedSwap"
-    local setting_value="0"
-    local key_exists="0"
-
-    if [ -e $file ]; then
-        key_exists=`defaults read $file | grep "$setting_name" | wc -l`
-    fi
-
-    if [ $key_exists == "1" ]; then
-        setting_value=`defaults read $file $setting_name`
-    fi
-
-    if [ "$list_flag" != "" ]; then echo "$doc"; fi
-
-    if [ "$print_flag" != "" ]; then
-        # if the Disabled value is 0, then the encrypted swap file is enabled
-        if [ $setting_value == "0" ]; then
-            echo "$friendly_name is enabled";
-        else
-            echo "$friendly_name is disabled";
-        fi
-    fi
-
-    if [ "$set_flag" != "" ]; then
-
-        # only enable the setting if it is not already set
-        case $profile_flag in
-            "ent")
-                if [ $setting_value != 0 ]; then
-                    echo "enabling $friendly_name";
-                    defaults write $file $setting_name -bool false
-                else
-                    echo "$friendly_name is already enabled"
-                fi
-                ;;
-            "soho")
-                if [ $setting_value != 0 ]; then
-                    echo "enabling $friendly_name";
-                    defaults write $file $setting_name -bool false
-                else
-                    echo "$friendly_name is already enabled"
-                fi
-                ;;
-            "sslf")
-                if [ $setting_value != 0 ]; then
-                    echo "enabling $friendly_name";
-                    defaults write $file $setting_name -bool false
-                else
-                    echo "$friendly_name is already enabled"
-                fi
-                ;;
-            "oem")
-                if [ $setting_value != 0 ]; then
-                    echo "enabling $friendly_name";
-                    defaults write $file $setting_name -bool false
-                else
-                    echo "$friendly_name is already enabled"
-                fi
-                ;;
-        esac
-    fi
-
-
-# OS X 10.10 Testing
-# The setting is not present by default, meaning that the swap file is encrypted.
-# However, when disabling the encryption with "DisableEncryptedSwap=1", the file doesn't
-# seem to be unencrypted even after restart. The value can be changed, but the setting
-# seems to have no effect.
 }
 
 
