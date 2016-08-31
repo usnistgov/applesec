@@ -2,7 +2,7 @@
 This page contains supplemental resources to Draft NIST Special Publication (SP) 800-179, _Guide to Securing Apple OS X 10.10 Systems for IT Professionals: A NIST Security Configuration Checklist_. The draft is located at [http://csrc.nist.gov/publications/PubsDrafts.html#800-179](http://csrc.nist.gov/publications/PubsDrafts.html#800-179).  
 Please send comments to 800-179comments@nist.gov.
 
-## Settings Spreadsheet - Coming Soon
+## Settings Spreadsheet
 The settings spreadsheet contains the information needed to configure a system on a per-setting basis. It includes each setting's identifier, command line instructions, and profile values. For a detailed explanation of the spreadsheet contents, see Appendix A of SP 800-179.
 
 ## Script Overview
