@@ -1750,7 +1750,6 @@ file_attribute_CCEs () {
         
         #CCE_79878_5_system_log_files_permissions
         r_print_file_permission "/var/log"
-        r_print_file_permission "$audit_log_path"
         r_print_file_permission "/Library/Logs"
 
 
@@ -1796,8 +1795,6 @@ file_attribute_CCEs () {
         #CCE_79904_9_etc_motd_owner
         #CCE_79905_6_etc_motd_group
         print_file_permission "/etc/motd"
-
-
 
         #CCE_79907_2_var_at_at_deny_owner
         print_file_permission "/var/at/at.deny"
@@ -1913,12 +1910,10 @@ file_attribute_CCEs () {
             # CCE_79725_8_syslog_conf_group
             set_max_file_permission "/etc/syslog.conf" "root" "wheel" "0644"
 
-                
-            #Covered by CCE_79878_5_system_log_files_permissions
             # CCE_79726_6_audit_logs_owner
             # CCE_79727_4_audit_logs_group
             # CCE_79728_2_audit_logs_permissions
-            #r_set_max_file_permission "$audit_log_path" "root" "wheel" "0640"
+            r_set_max_file_permission "$audit_log_path" "root" "wheel" "0640"
 
             # CCE_79730_8_audit_config_permissions
             set_max_file_permission "/etc/security/audit_class" "root" "wheel" "0555"
@@ -1948,11 +1943,7 @@ file_attribute_CCEs () {
             done
 
             #CCE_79878_5_system_log_files_permissions
-            # CCE_79726_6_audit_logs_owner
-            # CCE_79727_4_audit_logs_group
-            # CCE_79728_2_audit_logs_permissions
             r_set_max_file_permission "/var/log" "" "" "0644"
-            r_set_max_file_permission "$audit_log_path" "" "" "0640"
             r_set_max_file_permission "/Library/Logs" "" "" "0644"
 
             #CCE_79881_9_etc_shells_permissions
@@ -2107,14 +2098,12 @@ file_attribute_CCEs () {
             # CCE_79725_8_syslog_conf_group
             set_max_file_permission "/etc/syslog.conf" "root" "wheel" "0644"
 
-                
-            #Covered by CCE_79878_5_system_log_files_permissions
             # CCE_79726_6_audit_logs_owner
             # CCE_79727_4_audit_logs_group
             # CCE_79728_2_audit_logs_permissions
-            #r_set_max_file_permission "$audit_log_path" "root" "wheel" "0640"
+            r_set_max_file_permission "$audit_log_path" "root" "wheel" "0640"
 
-                # CCE_79730_8_audit_config_permissions
+            # CCE_79730_8_audit_config_permissions
             set_max_file_permission "/etc/security/audit_class" "root" "wheel" "0555"
             set_max_file_permission "/etc/security/audit_control" "root" "wheel" "0555"
             set_max_file_permission "/etc/security/audit_event" "root" "wheel" "0555"
@@ -2142,11 +2131,7 @@ file_attribute_CCEs () {
             done
 
             #CCE_79878_5_system_log_files_permissions
-            # CCE_79726_6_audit_logs_owner
-            # CCE_79727_4_audit_logs_group
-            # CCE_79728_2_audit_logs_permissions
             r_set_max_file_permission "/var/log" "" "" "0644"
-            r_set_max_file_permission "$audit_log_path" "" "" "0640"
             r_set_max_file_permission "/Library/Logs" "" "" "0644"
 
             #CCE_79881_9_etc_shells_permissions
@@ -2301,12 +2286,10 @@ file_attribute_CCEs () {
             # CCE_79725_8_syslog_conf_group
             set_max_file_permission "/etc/syslog.conf" "root" "wheel" "0644"
 
-                
-            #Covered by CCE_79878_5_system_log_files_permissions
             # CCE_79726_6_audit_logs_owner
             # CCE_79727_4_audit_logs_group
             # CCE_79728_2_audit_logs_permissions
-            #r_set_max_file_permission "$audit_log_path" "root" "wheel" "0640"
+            r_set_max_file_permission "$audit_log_path" "root" "wheel" "0640"
 
             # CCE_79730_8_audit_config_permissions
             set_max_file_permission "/etc/security/audit_class" "root" "wheel" "0555"
@@ -2336,11 +2319,7 @@ file_attribute_CCEs () {
             done
 
             #CCE_79878_5_system_log_files_permissions
-            # CCE_79726_6_audit_logs_owner
-            # CCE_79727_4_audit_logs_group
-            # CCE_79728_2_audit_logs_permissions
             r_set_max_file_permission "/var/log" "" "" "0644"
-            r_set_max_file_permission "$audit_log_path" "" "" "0640"
             r_set_max_file_permission "/Library/Logs" "" "" "0644"
 
             #CCE_79881_9_etc_shells_permissions
