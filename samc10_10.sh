@@ -1067,71 +1067,51 @@ CCE_79669_8_login_window_idle_time_for_screen_saver () {
 
     if [ "$list_flag" != "" ]; then echo "$doc"; fi
     
-    local file=$home_path/Library/Preferences/ByHost/com.apple.screensaver.$hw_uuid.plist
-    local file2=$home_path/Library/Preferences/com.apple.screensaver.plist
+    local file=/Library/Preferences/com.apple.screensaver.plist
 
     local friendly_name="Login window idle time"
-    local status="1200" # default value is confirmed
     local setting_name=loginWindowIdleTime
+    local current_value="1200" #default value
+    local key_exists
 
-    # if the ByHost file exists, then first try to access it
-    if [ -e $file ]; then
-
-        local key_exists=`defaults read $file | grep -w "$setting_name" | wc -l`
-        if [ $key_exists == 1 ]; then
-            status=`defaults read $file $setting_name`
-        # if the key is not present, then try to read file2
-        else
-            if [ -e $file2 ]; then
-                key_exists=`defaults read $file2 | grep -w "$setting_name" | wc -l`
-                if [ $key_exists == 1 ]; then
-                    status=`defaults read $file2 $setting_name`
-                    file=$file2  # since $file2 has the key, change that one
-                fi
-            fi
-        fi
-    #if ByHost file doesn't exist, try to access file2
-    elif [ -e $file2 ]; then
-        key_exists=`defaults read $file2 | grep -w "$setting_name" | wc -l`
-        if [ $key_exists == 1 ]; then
-            status=`defaults read $file2 $setting_name`
-            file=$file2  # since $file2 has the key, change that one
-        fi
-    # else do nothing, since neither file exists, and the default value will be used
+    if [ -s $file ]; then
+        key_exists=`defaults read $file 2> /dev/null | grep "$setting_name" | wc -l`
     fi
-    
+
+    if [ $key_exists == "1" ]; then
+        current_value=`defaults read $file $setting_name`
+    fi
+
+
     if [ "$print_flag" != "" ]; then
-        exists=`$def_r.screensaver.plist 2> /dev/null | grep loginWindowIdleTime | wc -l`
-        if [ $exists == "0" ];then 
-            echo "Login window idle time is 1200 seconds (20 minutes)"
+	#if the key doesn't exist, then the default value is set
+	if [ $key_exists == "0" ]; then
+            echo "Login window idle time: 1200 seconds (20 minutes)"
         else
-            status=`$def_r.screensaver.plist loginWindowIdleTime`
-            echo "Login Window Idle Time: $status"
+            echo "Login Window Idle Time: $current_value seconds"
         fi
     fi
     
     
     if [ "$set_flag" != "" ]; then
-    local status
     case $profile_flag in
         "ent") 
         echo "setting login window idle time to 900 seconds (15 minutes)";
-        #status=`$def_w.loginwindow.plist loginWindowIdleTime -int 900`
-        status=`defaults write $file $setting_name -int 900`
+        current_value=`defaults write $file $setting_name -int 900`
         ;;
         "soho")
         echo "setting login window idle time to 900 seconds (15 minutes)";
-        status=`defaults write $file $setting_name -int 900`
+        current_value=`defaults write $file $setting_name -int 900`
         ;;
         "sslf")
         echo "setting login window idle time to 900 seconds (15 minutes)";
-        status=`defaults write $file $setting_name -int 900`
+        current_value=`defaults write $file $setting_name -int 900`
         ;;
         "oem")
         echo "setting login window idle time to 1200 seconds (20 minutes)";
-        if [ `$def_r.screensaver.plist |
-              grep loginWindowIdleTime | wc -l` != "0" ]; then
-            status=`defaults write $file $setting_name -int 1200`
+        if [ `defaults read $file | grep loginWindowIdleTime | 
+                wc -l` != "0" ]; then
+            current_value=`defaults write $file $setting_name -int 1200`
         fi
         ;;
     esac
