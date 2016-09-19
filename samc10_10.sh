@@ -1072,7 +1072,7 @@ CCE_79669_8_login_window_idle_time_for_screen_saver () {
     local friendly_name="Login window idle time"
     local setting_name=loginWindowIdleTime
     local current_value="1200" #default value
-    local key_exists
+    local key_exists=0
 
     if [ -s $file ]; then
         key_exists=`defaults read $file 2> /dev/null | grep "$setting_name" | wc -l`
