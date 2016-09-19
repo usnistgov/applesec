@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>policyCategoryPasswordChange</key>
+	<array>
+		<dict>
+			<key>policyContent</key>
+			<string>policyAttributeCurrentTime &gt; policyAttributeLastPasswordChangeTime + (policyAttributeExpiresEveryNDays * 24 * 60 * 60)</string>
+			<key>policyIdentifier</key>
+			<string>com.apple.policy.legacy.maxMinutesUntilChangePassword</string>
+			<key>policyParameters</key>
+			<dict>
+				<key>policyAttributeExpiresEveryNDays</key>
+				<integer>60</integer>
+			</dict>
+		</dict>
+	</array>
+	<key>policyCategoryPasswordContent</key>
+	<array>
+		<dict>
+			<key>policyContent</key>
+			<string>none policyAttributePasswordHashes in policyAttributePasswordHistory</string>
+			<key>policyIdentifier</key>
+			<string>com.apple.policy.legacy.usingHistory</string>
+			<key>policyParameters</key>
+			<dict>
+				<key>policyAttributePasswordHistoryDepth</key>
+				<integer>15</integer>
+			</dict>
+		</dict>
+		<dict>
+			<key>policyContent</key>
+			<string>policyAttributePassword matches '(.*[A-Za-z].*)'</string>
+			<key>policyIdentifier</key>
+			<string>com.apple.policy.legacy.requiresAlpha</string>
+			<key>policyParameters</key>
+			<dict>
+				<key>minimumAlphaCharacters</key>
+				<integer>1</integer>
+			</dict>
+		</dict>
+		<dict>
+			<key>policyContent</key>
+			<string>policyAttributePassword matches '(.*[0-9].*)'</string>
+			<key>policyIdentifier</key>
+			<string>com.apple.policy.legacy.requiresNumeric</string>
+			<key>policyParameters</key>
+			<dict>
+				<key>minimumNumericCharacters</key>
+				<integer>1</integer>
+			</dict>
+		</dict>
+		<dict>
+			<key>policyContent</key>
+			<string>policyAttributePassword matches '.*[^0-9a-zA-Z].*'</string>
+			<key>policyIdentifier</key>
+			<string>com.apple.policy.legacy.requiresSymbolic</string>
+			<key>policyParameters</key>
+			<dict>
+				<key>minimumSymbolicCharacters</key>
+				<integer>1</integer>
+			</dict>
+		</dict>
+		<dict>
+			<key>policyContent</key>
+			<string>policyAttributePassword matches '(.*[a-z].*[A-Z].*)|(.*[A-Z].*[a-z].*)'</string>
+			<key>policyIdentifier</key>
+			<string>com.apple.policy.legacy.requiresMixedCase</string>
+			<key>policyParameters</key>
+			<dict>
+				<key>minimumMixedCaseInstances</key>
+				<integer>1</integer>
+			</dict>
+		</dict>
+		<dict>
+			<key>policyContent</key>
+			<string>policyAttributePassword matches '(.){12,}'</string>
+			<key>policyIdentifier</key>
+			<string>com.apple.policy.legacy.minChars</string>
+			<key>policyParameters</key>
+			<dict>
+				<key>minimumChars</key>
+				<integer>12</integer>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
