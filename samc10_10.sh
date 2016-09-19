@@ -16235,7 +16235,7 @@ local doc="CCE_79799_3_disable_bonjour_advertising                (manual-test-P
     fi
 
     if [ "$print_flag" != "" ]; then
-        if [ "$value_exists" != "0" || "$value2_exists" != "0" ]; then
+        if [ "$value_exists" != "0" -o "$value2_exists" != "0" ]; then
             echo "$friendly_name is disabled";
         else
             echo "$friendly_name is enabled";
