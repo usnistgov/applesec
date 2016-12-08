@@ -2679,7 +2679,6 @@ r_set_max_file_permission () {
 #
 r_set_max_directory_permission () {
     
-    #for file in `find $1 -name \* -print`; do
     while IFS= read -r file ; do
         if [ -d "$file" ]; then
             set_max_file_permission "$file" "$2" "$3" "$4"
@@ -2707,22 +2706,8 @@ r_set_file_permission () {
 # $1 : file path
 print_extended_acl () {
     if [ -a "$1" ]; then
-        #exists=`find $1 -name \* -type f -acl | grep -c \'\^$1\$\'`
-        #if [ $exists != "1" ];then
-        #local actual_file="$1"
         local file_ls=`ls -lde "$1"`
         
-        #problematic for some links (/var/audit and Trash files)
-        #if [ `echo "$file_ls" | grep -c "^l"` -ge "1" ]; then
-        #
-
-        #  actual_file=`readlink -n "$1"`
-        #	actual_file=`dirname "$1"`"/$actual_file"
-            
-        #fi
-            
-        #file_ls=`ls -lde "$actual_file"`
-            
         if [ `echo "$file_ls" | wc -l` -gt "1" ]; then
             if [ "$v_flag" != "" ]; then
                 # left justify the path, fill 40, and add the path
@@ -2784,10 +2769,6 @@ r_remove_extended_acl () {
     #as possible; the '{}' means path and name of current file
     #use -acl to only find acl files
     find "$1" -name \* -acl -exec chmod -N '{}' +
-    #for x in `find "$1" -name \* -print`
-    #do
-    #remove_extended_acl "$x"
-    #done
 }
 
 
@@ -2865,8 +2846,6 @@ COMMENT_BLOCK
         remove_extended_acl $shell_file
     done
     
-#:<<'COMMENT_BLOCK'
-    #Added
     #CCE_79861_1_no_acls_system_command_executables- this also covers the following CCEs:
     #CCE_79869_4_etc_shells_no_acls
     #CCE_79731_6_audit_tool_executables_acl
@@ -2892,7 +2871,6 @@ COMMENT_BLOCK
         remove_extended_acl "$lib_file"
     done
     
-#COMMENT_BLOCK
 }
 
 
@@ -2937,7 +2915,6 @@ extended_acls_CCEs () {
             echo "Checking for extended ACLs"
         fi
         
-#:<<'COMMENT_BLOCK'
         # CCE_79710_0_aliases_acl
         print_extended_acl "/etc/aliases"
 
@@ -2974,12 +2951,9 @@ extended_acls_CCEs () {
 
         # CCE_79729_0_audit_logs_acl
         r_print_extended_acl "$audit_log_path"
-#COMMENT_BLOCK
 
         
 
-#:<<'COMMENT_BLOCK'
-        #############NEW
 
         # CCE_79731_6_audit_tool_executables_acl - checked by 
         # CCE_79861_1_no_acls_system_command_executables
@@ -3023,7 +2997,6 @@ extended_acls_CCEs () {
         done
 
 
-#COMMENT_BLOCK
 
         if [ "$acl_files" == "0" ]; then
             echo "No extended ACL files found ($non_acl_files checked)."
@@ -10924,59 +10897,10 @@ local file="/etc/sudoers"
     if [ "$set_flag" != "" ]; then
         case $profile_flag in
             "ent")
-                if [ "$current_string" != "" ]; then
-                    echo "$friendly_name is already $required_value"
-                else
-                    echo "setting $friendly_name to $required_value"
-                    if [ "$v_flag" != "" ]; then
-                        echo "creating a backup of $file as ${file}.bk"
-                    fi
-                    cp "$file" "${file}.bk"
-
-                    # append setting to file
-                    echo "Defaults	${setting_name}" >> "$file"
-
-                    #check exit code to determine if write was successful
-                    visudo -qc
-                    local test_sudoers=$?
-
-                    #revert to backup file if an error occurred
-                    if [ "$test_sudoers" != "0" ]; then
-                        echo "write to /etc/sudoers failed: reverting to backup file"
-                        mv "${file}.bk" "$file"
-                    else
-                        echo "write to $file was successful"
-                        rm "${file}.bk" 2> /dev/null
-                    fi
-                fi
+                echo "setting for restricting sudo to single terminal is unchanged"
                 ;;
             "soho")
-                if [ "$current_string" != "" ]; then
-                    echo "$friendly_name is already $required_value"
-                else
-                    echo "setting $friendly_name to $required_value"
-                    if [ "$v_flag" != "" ]; then
-                        echo "creating a backup of $file as ${file}.bk"
-                    fi
-                    cp "$file" "${file}.bk"
-
-
-                    # append setting to file
-                    echo "Defaults	${setting_name}" >> "$file"
-
-                    #check exit code to determine if write was successful
-                    visudo -qc
-                    local test_sudoers=$?
-
-                    #revert to backup file if an error occurred
-                    if [ "$test_sudoers" != "0" ]; then
-                        echo "write to /etc/sudoers failed: reverting to backup file"
-                        mv "${file}.bk" "$file"
-                    else
-                        echo "write to $file was successful"
-                        rm "${file}.bk" 2> /dev/null
-                    fi
-                fi
+                echo "setting for restricting sudo to single terminal is unchanged"
                 ;;
             "sslf")
                 if [ "$current_string" != "" ]; then
@@ -11056,7 +10980,8 @@ CCE_79910_6_sudo_timeout_period_set_to_0 () {
     local current_string=""
 
 
-    local required_value="0"
+    local required_value="5"
+    local sslf_value="0"
     local oem_value="5"
 
     if [ "$list_flag" != "" ]; then echo "$doc"; fi
@@ -11174,10 +11099,10 @@ CCE_79910_6_sudo_timeout_period_set_to_0 () {
                 fi
                 ;;
             "sslf")
-                if [ "$current_value" == "$required_value" ]; then
-                    echo "$friendly_name is already set to $required_value minutes"
+                if [ "$current_value" == "$sslf_value" ]; then
+                    echo "$friendly_name is already set to $sslf_value minutes"
                 else
-                    echo "setting $friendly_name to $required_value"
+                    echo "setting $friendly_name to $sslf_value"
                     if [ "$v_flag" != "" ]; then
                         echo "creating a backup of $file as ${file}.bk"
                     fi
@@ -11185,7 +11110,7 @@ CCE_79910_6_sudo_timeout_period_set_to_0 () {
 
                     if [ "$current_string" != "" ]; then
                         # replace existing value with new value
-                        new_file_contents=`echo "$file_contents" | sed "s/^$current_string/Defaults	${setting_name}${required_value}/"`
+                        new_file_contents=`echo "$file_contents" | sed "s/^$current_string/Defaults	${setting_name}${sslf_value}/"`
                         echo "$new_file_contents" > "$file"
 
                         #check exit code to determine if write was successful
@@ -11202,7 +11127,7 @@ CCE_79910_6_sudo_timeout_period_set_to_0 () {
                         fi
                     else
                         # append setting to file
-                        echo "Defaults	${setting_name}${required_value}" >> "$file"
+                        echo "Defaults	${setting_name}${sslf_value}" >> "$file"
 
                         #check exit code to determine if write was successful
                         visudo -qc
